@@ -88,7 +88,6 @@ public class AuthorDAO {
         transaction.commit();
         session.close();
     }
-
     public void addBookToAuthor(String authorName,Book book){}
 
     public List<Author> getAllAuthors(){
