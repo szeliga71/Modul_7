@@ -3,7 +3,7 @@ package org.example;
 import jakarta.persistence.*;
 
 @Entity
-public class Book {
+public class Book implements Comparable<Book> {
     @Id
     @GeneratedValue
     private long id;
@@ -53,6 +53,13 @@ public class Book {
     public void setAuthor(Author author) {
         this.author = author;
     }
+    @Override
+    public int compareTo(Book other) {
+        if (this.numberOfPages == null || other.numberOfPages == null) {
+            throw new NullPointerException("NumberOfPages cannot be null for comparison.");
+        }
+        return this.numberOfPages.compareTo(other.numberOfPages);
+    }
 
     @Override
     public String toString() {
@@ -61,7 +68,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
                 ", numberOfPages=" + numberOfPages +
-                ", author=" + author +
+                ", author=" + author.getName() +
                 '}';
     }
 }

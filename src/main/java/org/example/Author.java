@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="Author_of_Book")
@@ -69,6 +70,17 @@ public class Author {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+    private String showBooksOfAuthor(List<Book>books){
+        if(books==null|| books.isEmpty()){
+            return "No Books Found";
+        }else{
+            StringBuilder sb=new StringBuilder();
+            for(Book book:books){
+                sb.append(book.getTitle()).append(book.getNumberOfPages()).append('\n');
+            }
+            return sb.toString();
+        }
+    }
 
     @Override
     public String toString() {
@@ -77,7 +89,7 @@ public class Author {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", favouriteGenre='" + favouriteGenre + '\'' +
-               // ", books=" + books +
+              //" books=" + books +
                 '}';
     }
 }

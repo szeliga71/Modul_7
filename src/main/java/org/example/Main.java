@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -49,6 +51,8 @@ public class Main {
         books.clear();
         books.add(book3);
 
+        System.out.println(books);
+
         authorDAO.saveAuthor(author2,books);
 
         System.out.println("=============================");
@@ -64,10 +68,42 @@ public class Main {
         System.out.println(authorDAO.findAuthorByName("Nowak"));
         System.out.println("=============================");
 
-        System.out.println(authorDAO.getBooksOfAuthor("Kowalski"));
+        //System.out.println(authorDAO.getBooksOfAuthor("Kowalski"));
+        //System.out.println(authorDAO.getAllAuthors());
+        //System.out.println(authorDAO.getAllBooks());
 
-       // authorDAO.deleteBooksOfAuthor("Kowalski");
-       authorDAO.deleteAuthor("Kowalski");
 
+        Book book4 = new Book();
+        book4.setAuthor(author1);
+        book4.setTitle("C++");
+        book4.setGenre(Genre.CRIME);
+        book4.setNumberOfPages(664);
+
+        authorDAO.addBookToAuthor(book4,"Kowalski");
+
+        Author author3 = new Author();
+        author3.setName("Malinowski");
+        author3.setAge(21);
+        author3.setFavouriteGenre(Genre.ADVENTURE);
+
+        authorDAO.addAuthor(author3);
+        authorDAO.addBookToAuthor(book4,"Malinowski");
+
+
+       // authorDAO.deleteAuthor("Malinowski");
+        //authorDAO.deleteBook("C++");
+
+       // System.out.println(authorDAO.getAllBooksAndAuthors().get(2).getBooks());
+
+        //authorDAO.getAllBooksAndAuthors();
+
+        //authorDAO.getAllBooksAndAuthors().stream().forEach(System.out::println);
+
+        //authorDAO.getAllBooks().stream().sorted(Comparator.comparing(Book::getNumberOfPages)).forEach(book->System.out.println(book));
+
+        List<Book> books2 = authorDAO.getAllBooks();
+        Collections.sort(books2);
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        System.out.println(books2);
     }
 }
