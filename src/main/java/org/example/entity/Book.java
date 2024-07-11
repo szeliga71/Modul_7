@@ -1,4 +1,4 @@
-package org.example;
+package org.example.entity;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class Book implements Comparable<Book> {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
     private Genre genre;
@@ -70,5 +70,46 @@ public class Book implements Comparable<Book> {
                 ", numberOfPages=" + numberOfPages +
                 ", author=" + author.getName() +
                 '}';
+    }
+    public boolean isValid() {
+        if (title == null || title.isEmpty()) {
+            System.out.println("Validation failed: title is null or empty.");
+            return false;
+        }
+        if (genre == null) {
+            System.out.println("Validation failed: genre is null.");
+            return false;
+        }
+        if (numberOfPages <= 0) {
+            System.out.println("Validation failed: numberOfPages is less than or equal to zero.");
+            return false;
+        }
+        if (author == null || author.getName() == null || author.getName().isEmpty()) {
+            System.out.println("Validation failed: author is null or author's name is null or empty.");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+
+        return getId() == book.getId() &&
+                getTitle().equals(book.getTitle()) &&
+                getGenre() == book.getGenre() &&
+                getNumberOfPages().equals(book.getNumberOfPages()) &&
+                getAuthor().equals(book.getAuthor());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Long.hashCode(getId());
+        result = 31 * result + getTitle().hashCode();
+        result = 31 * result + getGenre().hashCode();
+        result = 31 * result + getNumberOfPages().hashCode();
+        result = 31 * result + getAuthor().hashCode();
+        return result;
     }
 }

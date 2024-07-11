@@ -1,4 +1,4 @@
-package org.example;
+package org.example.entity;
 
 public enum Genre {
     COMEDY,HORROR,CRIME,FANTASY,ROMANCE,ADVENTURE,THRILLER,SCIENCE_FICTION,HISTORY,TRAVEL,BIOGRAPHY

@@ -1,10 +1,9 @@
-package org.example;
+package org.example.entity;
 
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name="Author_of_Book")
@@ -12,7 +11,7 @@ public class Author {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     private String name;
     private Integer age;
     @Enumerated(EnumType.STRING)
@@ -91,5 +90,39 @@ public class Author {
                 ", favouriteGenre='" + favouriteGenre + '\'' +
               //" books=" + books +
                 '}';
+    }
+    public boolean isValid() {
+        if (name == null || name.isEmpty()) {
+            System.out.println("Validation failed: name is null or empty.");
+            return false;
+        }
+        if (favouriteGenre == null) {
+            System.out.println("Validation failed: favorite genre is null.");
+            return false;
+        }
+        if (age <= 0) {
+            System.out.println("Validation failed: age is less than or equal to zero.");
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Author author)) return false;
+
+        return getId() == author.getId() && getName().equals(author.getName()) && getAge().equals(author.getAge()) && getFavouriteGenre() == author.getFavouriteGenre() && getBooks().equals(author.getBooks());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Long.hashCode(getId());
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getAge().hashCode();
+        result = 31 * result + getFavouriteGenre().hashCode();
+        result = 31 * result + getBooks().hashCode();
+        return result;
     }
 }

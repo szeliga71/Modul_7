@@ -11,7 +11,7 @@
         <property name="hibernate.connection.password">postgresql</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
-        <mapping class="org.example.Author"/>
-        <mapping class="org.example.Book"/>
+        <mapping class="org.example.entity.Author"/>
+        <mapping class="org.example.entity.Book"/>
     </session-factory>
 </hibernate-configuration>
