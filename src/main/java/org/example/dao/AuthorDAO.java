@@ -174,7 +174,7 @@ public class AuthorDAO {
 
     public List<Book> findBooksByTitle(String title) {
         if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Provided name of Author cannot be null or empty");
+            throw new IllegalArgumentException("Provided title of Book cannot be null or empty");
         }
         Session session = sessionFactory.openSession();
         try {
@@ -192,7 +192,7 @@ public class AuthorDAO {
 
     public Book findBookByTitle(String title) {
         if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Provided name of Author cannot be null or empty");
+            throw new IllegalArgumentException("Provided title of Book cannot be null or empty");
         }
         Session session = sessionFactory.openSession();
         try {

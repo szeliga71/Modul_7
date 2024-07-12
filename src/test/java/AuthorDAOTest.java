@@ -248,11 +248,97 @@ public class AuthorDAOTest {
         Assertions.assertArrayEquals(books,authorDAO.getBooksOfAuthor(testAuthor.getName()).toArray());
     }
 
+    @Test
+    void findBooksByTitleNullTitleTest(){
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> authorDAO.findBooksByTitle(null));
+        String expectedMessage = "Provided title of Book cannot be null or empty";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void findBooksByTitleNullTitleTest1(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->authorDAO.findBooksByTitle(null));
+    }
+    @Test
+    void findBooksByTitleEmptyTitleTest(){
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> authorDAO.findBooksByTitle(""));
+        String expectedMessage = "Provided title of Book cannot be null or empty";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void findBooksByTitleEmptyTitleTest1(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->authorDAO.findBooksByTitle(""));
+    }
+    @Test
+    void findBooksByTitleHappyPathTest(){
+        Author testAuthor=createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book testBook=createBook(testAuthor);
+        authorDAO.addBookToAuthor(testBook,testAuthor.getName());
+        Assertions.assertEquals(testBook.getTitle(),authorDAO.findBooksByTitle(testBook.getTitle()).get(0).getTitle());
+        authorDAO.deleteBook(testBook.getTitle());
+    }
+    @Test
+    void findBooksByTitleHappyPathTest1(){
+        Author testAuthor=createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book testBook=createBook(testAuthor);
+        authorDAO.addBookToAuthor(testBook,testAuthor.getName());
+        Assertions.assertEquals(testBook.getNumberOfPages(),authorDAO.findBooksByTitle(testBook.getTitle()).get(0).getNumberOfPages());
+        authorDAO.deleteBook(testBook.getTitle());
+    }
+    @Test
+    void findBookByTitleHappyPathTest(){
+        Author testAuthor=createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book testBook=createBook(testAuthor);
+        authorDAO.addBookToAuthor(testBook,testAuthor.getName());
+        Assertions.assertEquals(testBook.getTitle(),authorDAO.findBookByTitle(testBook.getTitle()).getTitle());
+        authorDAO.deleteBook(testBook.getTitle());
+    }
+    @Test
+    void findBookByTitleHappyPathTest1(){
+        Author testAuthor=createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book testBook=createBook(testAuthor);
+        authorDAO.addBookToAuthor(testBook,testAuthor.getName());
+        Assertions.assertEquals(testBook.getNumberOfPages(),authorDAO.findBookByTitle(testBook.getTitle()).getNumberOfPages());
+        authorDAO.deleteBook(testBook.getTitle());
+    }
+    @Test
+    void findBookByTitleNullTitleTest(){
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> authorDAO.findBookByTitle(null));
+        String expectedMessage = "Provided title of Book cannot be null or empty";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void findBookByTitleNullTitleTest1(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->authorDAO.findBookByTitle(null));
+    }
+    @Test
+    void findBookByTitleEmptyTitleTest(){
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> authorDAO.findBookByTitle(""));
+        String expectedMessage = "Provided title of Book cannot be null or empty";
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void findBookByTitleEmptyTitleTest1(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->authorDAO.findBookByTitle(""));
+    }
+    @Test
+    void getBooksOfAuthorNullAuthorNameTest(){}
+    @Test
+    void getBooksOfAuthorNullAuthorNameTest1(){}
+    @Test
+    void getBooksOfAuthorEmptyAuthorNameTest(){}
+    @Test
+    void getBooksOfAuthorEmptyAuthorNameTest1(){}
+    @Test
+    void getBooksOfAuthorHappyPathTest(){}
+
 }
 /*
-
-    public List<Book> findBooksByTitle(String title) {
-        if (title == null || title.isEmpty()) {
+    public List<Book> getBooksOfAuthor(String authorName) {
+        if (authorName == null || authorName.isEmpty()) {
             throw new IllegalArgumentException("Provided name of Author cannot be null or empty");
         }
         Session session = sessionFactory.openSession();
@@ -260,26 +346,10 @@ public class AuthorDAOTest {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<Book> bookQuery = criteriaBuilder.createQuery(Book.class);
             Root<Book> root = bookQuery.from(Book.class);
-            bookQuery.select(root).where(criteriaBuilder.equal(root.get("title"), title));
-            return session.createQuery(bookQuery).getResultList();
-        } catch (NoResultException e) {
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public Book findBookByTitle(String title) {
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Provided name of Author cannot be null or empty");
-        }
-        Session session = sessionFactory.openSession();
-        try {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Book> bookQuery = criteriaBuilder.createQuery(Book.class);
-            Root<Book> root = bookQuery.from(Book.class);
-            bookQuery.select(root).where(criteriaBuilder.equal(root.get("title"), title));
-            return session.createQuery(bookQuery).getSingleResult();
+            bookQuery.select(root).where(criteriaBuilder.equal(root.get("author").get("name"), authorName));
+            List<Book> books = session.createQuery(bookQuery).getResultList();
+            books.sort(Comparator.comparing(Book::getNumberOfPages));
+            return books;
         } catch (NoResultException e) {
             return null;
         } finally {
