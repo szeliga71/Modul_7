@@ -1,6 +1,7 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import org.example.entitySupport.Genre;
 
 @Entity
 public class Book implements Comparable<Book> {
@@ -14,11 +15,11 @@ public class Book implements Comparable<Book> {
     @ManyToOne
     private Author author;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,6 +54,7 @@ public class Book implements Comparable<Book> {
     public void setAuthor(Author author) {
         this.author = author;
     }
+
     @Override
     public int compareTo(Book other) {
         if (this.numberOfPages == null || other.numberOfPages == null) {
@@ -71,6 +73,7 @@ public class Book implements Comparable<Book> {
                 ", author=" + author.getName() +
                 '}';
     }
+
     public boolean isValid() {
         if (title == null || title.isEmpty()) {
             System.out.println("Validation failed: title is null or empty.");
@@ -96,11 +99,10 @@ public class Book implements Comparable<Book> {
         if (this == o) return true;
         if (!(o instanceof Book book)) return false;
 
-        return getId() == book.getId() &&
-                getTitle().equals(book.getTitle()) &&
-                getGenre() == book.getGenre() &&
-                getNumberOfPages().equals(book.getNumberOfPages()) &&
-                getAuthor().equals(book.getAuthor());
+        return getTitle().equals(book.getTitle()) &&
+                        getGenre() == book.getGenre() &&
+                        getNumberOfPages().equals(book.getNumberOfPages()) &&
+                        getAuthor().equals(book.getAuthor());
     }
 
     @Override

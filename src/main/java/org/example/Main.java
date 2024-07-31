@@ -3,7 +3,8 @@ package org.example;
 import org.example.dao.AuthorDAO;
 import org.example.entity.Author;
 import org.example.entity.Book;
-import org.example.entity.Genre;
+import org.example.entitySupport.Genre;
+import org.example.sessions.AuthorSessionFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        AuthorDAO authorDAO = new AuthorDAO();
+        AuthorDAO authorDAO = new AuthorDAO(AuthorSessionFactory.getAuthorSessionFactory());
 
         Author author1 = new Author();
         author1.setName("Kowalski");
@@ -26,7 +27,13 @@ public class Main {
         Author author3 = new Author();
         author3.setName("Malinowski");
         author3.setAge(21);
-        author3.setFavouriteGenre(Genre.ADVENTURE);
+        author3.setFavouriteGenre(Genre.FANTASY);
+
+        Author author4 = new Author();
+        author4.setName("Kowalski");
+        author4.setAge(40);
+        author4.setFavouriteGenre(Genre.ADVENTURE);
+
 
         List<Book> books = new ArrayList<>();
 
@@ -55,17 +62,26 @@ public class Main {
         book4.setNumberOfPages(664);
 
 //================================================================
-        books.add(book1);
-        books.add(book2);
-        authorDAO.saveAuthor(author1, books);
-        books.clear();
-        books.add(book3);
-        authorDAO.saveAuthor(author2, books);
-        books.clear();
-        authorDAO.addAuthor(author3);
-        authorDAO.addBookToAuthor(book4, "Malinowski");
-        //authorDAO.addBookToAuthor(book4,"Kowalski");
-        authorDAO.getAllBooksAndAuthors();
+
+
+        authorDAO.addAuthor(author1);
+
+
+        authorDAO.addBookToAuthor(book1,"Kowalski");
+        authorDAO.addBookToAuthor(book2,"Kowalski");
+
+        authorDAO.addAuthor(author2);
+        authorDAO.deleteBooksOfAuthor("Kowalski");
+        authorDAO.addBookToAuthor(book4,"Kowalski");
+        authorDAO.addBookToAuthor(book3,"Nowak");
+
+        System.out.println(authorDAO.getAllBooks());
+
+        System.out.println(authorDAO.getBooksOfAuthor("Nowak"));
+
+        authorDAO.deleteBooksOfAuthor("Nowak");
+        System.out.println(authorDAO.getBooksOfAuthor("Nowak"));
+
 
 
 

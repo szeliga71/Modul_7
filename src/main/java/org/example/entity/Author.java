@@ -1,12 +1,12 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-
+import org.example.entitySupport.Genre;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="Author_of_Book")
+@Table(name = "Author_of_Book")
 public class Author {
 
     @Id
@@ -17,8 +17,8 @@ public class Author {
     @Enumerated(EnumType.STRING)
     private Genre favouriteGenre;
 
-    @OneToMany(mappedBy = "author")
-    private List<Book> books=new ArrayList<>();
+    @OneToMany(mappedBy = "author")//,fetch = FetchType.EAGER)
+    private List<Book> books = new ArrayList<>();
 
     public Author() {
     }
@@ -69,13 +69,14 @@ public class Author {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
-    private String showBooksOfAuthor(List<Book>books){
-        if(books==null|| books.isEmpty()){
+
+    private String showBooksOfAuthor(List<Book> books) {
+        if (books == null || books.isEmpty()) {
             return "No Books Found";
-        }else{
-            StringBuilder sb=new StringBuilder();
-            for(Book book:books){
-                sb.append(book.getTitle()).append(book.getNumberOfPages()).append('\n');
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (Book book : books) {
+                sb.append(book.getTitle()).append(" ").append(book.getNumberOfPages()).append(" ").append('\n');
             }
             return sb.toString();
         }
@@ -88,9 +89,9 @@ public class Author {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", favouriteGenre='" + favouriteGenre + '\'' +
-              //" books=" + books +
                 '}';
     }
+
     public boolean isValid() {
         if (name == null || name.isEmpty()) {
             System.out.println("Validation failed: name is null or empty.");
@@ -113,7 +114,7 @@ public class Author {
         if (this == o) return true;
         if (!(o instanceof Author author)) return false;
 
-        return getId() == author.getId() && getName().equals(author.getName()) && getAge().equals(author.getAge()) && getFavouriteGenre() == author.getFavouriteGenre() && getBooks().equals(author.getBooks());
+        return getName().equals(author.getName()) && getAge().equals(author.getAge()) && getFavouriteGenre() == author.getFavouriteGenre();
     }
 
     @Override
@@ -122,7 +123,6 @@ public class Author {
         result = 31 * result + getName().hashCode();
         result = 31 * result + getAge().hashCode();
         result = 31 * result + getFavouriteGenre().hashCode();
-        result = 31 * result + getBooks().hashCode();
         return result;
     }
 }
