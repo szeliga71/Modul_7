@@ -553,7 +553,6 @@ public class AuthorDaoWithContainersTest {
         Assertions.assertEquals(books.length, authorDAO.getBooksOfAuthor(author.getName()).toArray().length);
     }
 
-
     @Test
     void getAllAuthorsWithBooksHappyPathTest() {
         Author[] authors = new Author[0];
@@ -580,10 +579,8 @@ public class AuthorDaoWithContainersTest {
         authorDAO.addBookToAuthor(book3, testAuthor.getName());
         List<Author> authors = authorDAO.getAllAuthorsWithBooks();
         List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
-        List<Book>booksOfTestAuthorFromTestedMethod = authors.get(0).getBooks();
-        Assertions.assertEquals(booksOfTestAuthor.toArray().length,booksOfTestAuthorFromTestedMethod.toArray().length);
-
-
+        List<Book> booksOfTestAuthorFromTestedMethod = authors.get(0).getBooks();
+        Assertions.assertEquals(booksOfTestAuthor.toArray().length, booksOfTestAuthorFromTestedMethod.toArray().length);
     }
 
     @Test
@@ -606,9 +603,9 @@ public class AuthorDaoWithContainersTest {
         authorDAO.addBookToAuthor(book3, testAuthor.getName());
         List<Author> authors = authorDAO.getAllAuthorsWithBooks();
         List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
-        Book expectedBook=authors.get(0).getBooks().get(0);
-        Book actualBook=booksOfTestAuthor.get(2);
-        Assertions.assertEquals(expectedBook.getTitle(),actualBook.getTitle());
+        Book expectedBook = authors.get(0).getBooks().get(0);
+        Book actualBook = booksOfTestAuthor.get(2);
+        Assertions.assertEquals(expectedBook.getTitle(), actualBook.getTitle());
     }
 
     @Test
@@ -631,10 +628,11 @@ public class AuthorDaoWithContainersTest {
         authorDAO.addBookToAuthor(book3, testAuthor.getName());
         List<Author> authors = authorDAO.getAllAuthorsWithBooks();
         List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
-        Book expectedBook=authors.get(0).getBooks().get(0);
-        Book actualBook=booksOfTestAuthor.get(2);
-        Assertions.assertEquals(expectedBook.getNumberOfPages(),actualBook.getNumberOfPages());
+        Book expectedBook = authors.get(0).getBooks().get(0);
+        Book actualBook = booksOfTestAuthor.get(2);
+        Assertions.assertEquals(expectedBook.getNumberOfPages(), actualBook.getNumberOfPages());
     }
+
     @Test
     void getAllAuthorsWithBooksHappyPathTest4() {
         Author testAuthor = createAuthor();
@@ -655,8 +653,8 @@ public class AuthorDaoWithContainersTest {
         authorDAO.addBookToAuthor(book3, testAuthor.getName());
         List<Author> authors = authorDAO.getAllAuthorsWithBooks();
         List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
-        Book expectedBook=authors.get(0).getBooks().get(0);
-        Book actualBook=booksOfTestAuthor.get(2);
-        Assertions.assertEquals(expectedBook,actualBook);
+        Book expectedBook = authors.get(0).getBooks().get(0);
+        Book actualBook = booksOfTestAuthor.get(2);
+        Assertions.assertEquals(expectedBook, actualBook);
     }
 }
