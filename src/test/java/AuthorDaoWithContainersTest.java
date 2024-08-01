@@ -11,6 +11,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
+
 
 @Testcontainers
 public class AuthorDaoWithContainersTest {
@@ -550,20 +552,111 @@ public class AuthorDaoWithContainersTest {
         Book[] books = new Book[2];
         Assertions.assertEquals(books.length, authorDAO.getBooksOfAuthor(author.getName()).toArray().length);
     }
-}
 
-/*
 
-    ==========================================================================
-        public List<Author> getAllAuthorsWithBooks() {
-        Session session = sessionFactory.openSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Author> cq = cb.createQuery(Author.class);
-        Root<Author> root = cq.from(Author.class);
-        root.fetch("books", JoinType.LEFT);
-        cq.select(root).distinct(true);
-        List<Author> authors = session.createQuery(cq).getResultList();
-        session.close();
-        return authors;
+    @Test
+    void getAllAuthorsWithBooksHappyPathTest() {
+        Author[] authors = new Author[0];
+        Assertions.assertEquals(authors.length, authorDAO.getAllAuthorsWithBooks().toArray().length);
     }
- */
+
+    @Test
+    void getAllAuthorsWithBooksHappyPathTest1() {
+        Author testAuthor = createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book book = createBook(testAuthor);
+        Book book2 = createBook(testAuthor);
+        book2.setTitle("testBook2");
+        book2.setAuthor(testAuthor);
+        book2.setGenre(Genre.TRAVEL);
+        book2.setNumberOfPages(331);
+        Book book3 = createBook(testAuthor);
+        book3.setTitle("testBook3");
+        book3.setAuthor(testAuthor);
+        book3.setGenre(Genre.TRAVEL);
+        book3.setNumberOfPages(777);
+        authorDAO.addBookToAuthor(book, testAuthor.getName());
+        authorDAO.addBookToAuthor(book2, testAuthor.getName());
+        authorDAO.addBookToAuthor(book3, testAuthor.getName());
+        List<Author> authors = authorDAO.getAllAuthorsWithBooks();
+        List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
+        List<Book>booksOfTestAuthorFromTestedMethod = authors.get(0).getBooks();
+        Assertions.assertEquals(booksOfTestAuthor.toArray().length,booksOfTestAuthorFromTestedMethod.toArray().length);
+
+
+    }
+
+    @Test
+    void getAllAuthorsWithBooksHappyPathTest2() {
+        Author testAuthor = createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book book = createBook(testAuthor);
+        Book book2 = createBook(testAuthor);
+        book2.setTitle("testBook2");
+        book2.setAuthor(testAuthor);
+        book2.setGenre(Genre.TRAVEL);
+        book2.setNumberOfPages(331);
+        Book book3 = createBook(testAuthor);
+        book3.setTitle("testBook3");
+        book3.setAuthor(testAuthor);
+        book3.setGenre(Genre.TRAVEL);
+        book3.setNumberOfPages(777);
+        authorDAO.addBookToAuthor(book, testAuthor.getName());
+        authorDAO.addBookToAuthor(book2, testAuthor.getName());
+        authorDAO.addBookToAuthor(book3, testAuthor.getName());
+        List<Author> authors = authorDAO.getAllAuthorsWithBooks();
+        List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
+        Book expectedBook=authors.get(0).getBooks().get(0);
+        Book actualBook=booksOfTestAuthor.get(2);
+        Assertions.assertEquals(expectedBook.getTitle(),actualBook.getTitle());
+    }
+
+    @Test
+    void getAllAuthorsWithBooksHappyPathTest3() {
+        Author testAuthor = createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book book = createBook(testAuthor);
+        Book book2 = createBook(testAuthor);
+        book2.setTitle("testBook2");
+        book2.setAuthor(testAuthor);
+        book2.setGenre(Genre.TRAVEL);
+        book2.setNumberOfPages(331);
+        Book book3 = createBook(testAuthor);
+        book3.setTitle("testBook3");
+        book3.setAuthor(testAuthor);
+        book3.setGenre(Genre.TRAVEL);
+        book3.setNumberOfPages(777);
+        authorDAO.addBookToAuthor(book, testAuthor.getName());
+        authorDAO.addBookToAuthor(book2, testAuthor.getName());
+        authorDAO.addBookToAuthor(book3, testAuthor.getName());
+        List<Author> authors = authorDAO.getAllAuthorsWithBooks();
+        List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
+        Book expectedBook=authors.get(0).getBooks().get(0);
+        Book actualBook=booksOfTestAuthor.get(2);
+        Assertions.assertEquals(expectedBook.getNumberOfPages(),actualBook.getNumberOfPages());
+    }
+    @Test
+    void getAllAuthorsWithBooksHappyPathTest4() {
+        Author testAuthor = createAuthor();
+        authorDAO.addAuthor(testAuthor);
+        Book book = createBook(testAuthor);
+        Book book2 = createBook(testAuthor);
+        book2.setTitle("testBook2");
+        book2.setAuthor(testAuthor);
+        book2.setGenre(Genre.TRAVEL);
+        book2.setNumberOfPages(331);
+        Book book3 = createBook(testAuthor);
+        book3.setTitle("testBook3");
+        book3.setAuthor(testAuthor);
+        book3.setGenre(Genre.TRAVEL);
+        book3.setNumberOfPages(777);
+        authorDAO.addBookToAuthor(book, testAuthor.getName());
+        authorDAO.addBookToAuthor(book2, testAuthor.getName());
+        authorDAO.addBookToAuthor(book3, testAuthor.getName());
+        List<Author> authors = authorDAO.getAllAuthorsWithBooks();
+        List<Book> booksOfTestAuthor = authorDAO.getBooksOfAuthor(testAuthor.getName());
+        Book expectedBook=authors.get(0).getBooks().get(0);
+        Book actualBook=booksOfTestAuthor.get(2);
+        Assertions.assertEquals(expectedBook,actualBook);
+    }
+}
