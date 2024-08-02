@@ -144,7 +144,6 @@ public class AuthorDaoWithContainersTest {
         authorDAO.addBookToAuthor(testBook, testAuthor.getName());
         Assertions.assertEquals(testBook.getTitle(), authorDAO.findBookByTitle(testBook.getTitle()).getTitle());
     }
-
     @Test
     void findBookByTitleHappyPathTest1() {
         Author testAuthor = createAuthor();
