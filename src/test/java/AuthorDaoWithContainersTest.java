@@ -2,10 +2,7 @@ import org.example.dao.AuthorDAO;
 import org.example.entity.Author;
 import org.example.entity.Book;
 import org.example.entitySupport.Genre;
-import org.example.sessions.AuthorSessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -13,22 +10,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-
 @Testcontainers
 public class AuthorDaoWithContainersTest {
 
     String jdbcUrl = postgres.getJdbcUrl();
     String username = postgres.getUsername();
     String password = postgres.getPassword();
-    private AuthorDAO authorDAO = new AuthorDAO(AuthorSessionFactory.getAuthorSessionFactoryTest(jdbcUrl, username, password));
-
-    @BeforeEach
-    public void setUp() {
-        Configuration configuration = new Configuration();
-        configuration.setProperty("hibernate.connection.url", postgres.getJdbcUrl());
-        configuration.setProperty("hibernate.connection.username", postgres.getUsername());
-        configuration.setProperty("hibernate.connection.password", postgres.getPassword());
-    }
+    private AuthorDAO authorDAO = new AuthorDAO(AuthorSessionsFactoryTest.getAuthorSessionFactoryTest(jdbcUrl, username, password));
 
     private Author createAuthor() {
         Author testAuthor = new Author();
@@ -48,7 +36,7 @@ public class AuthorDaoWithContainersTest {
     }
 
     @Container
-    public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest")
+    public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test");
@@ -57,15 +45,7 @@ public class AuthorDaoWithContainersTest {
     void faindAuthorByNameHappyPathTest() {
         Author testAuthor = createAuthor();
         authorDAO.addAuthor(testAuthor);
-        Author autTest = authorDAO.findAuthorByName(testAuthor.getName());
-        System.out.println(autTest);
         Assertions.assertEquals(testAuthor.getName(), authorDAO.findAuthorByName(testAuthor.getName()).getName());
-    }
-
-    @Test
-    void faindAuthorByNameHappyPathTestAge() {
-        Author testAuthor = createAuthor();
-        authorDAO.addAuthor(testAuthor);
         Assertions.assertEquals(testAuthor.getAge(), authorDAO.findAuthorByName(testAuthor.getName()).getAge());
     }
 
